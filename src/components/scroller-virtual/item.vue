@@ -5,18 +5,20 @@
     <input class="w-52 h-10" />
     <input class="w-52 h-10" />
     <input class="w-52 h-10" />
-    <input class="w-52 h-10 bg-red" @keydown.tab.prevent="$emit('onTriggerTab')" />
+    <input class="w-52 h-10 bg-red" @keydown.tab.prevent="handleTab" />
   </div>
 </template>
 <script setup lang="ts">
-  type Emits = {
-    onTriggerTab: () => void;
-  };
   type Props = {
     id: number;
   };
-  defineEmits<Emits>(["onTriggerTab"]);
-  defineProps<Props>(["id"]);
+  const emits = defineEmits<{
+    onTriggerTab: [];
+  }>();
+  defineProps<Props>();
+  const handleTab = () => {
+    emits("onTriggerTab");
+  };
 </script>
 <style>
   .item-row {

@@ -1,5 +1,5 @@
 <template>
-  <div ref="container" class="container" @scroll="handleScroll">
+  <div ref="containerRef" class="container" @scroll="handleScroll">
     <div class="phantom" :style="{ height: totalHeight + 'px' }"></div>
     <div class="content" :style="{ transform: `translateY(${offset}px)` }">
       <div v-for="item in visibleItems" :key="item.id" class="item">
@@ -9,42 +9,37 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="ts" setup>
+  import { computed, ref } from "vue";
   import Item from "./item.vue";
-  export default {
-    components: { Item },
-    data() {
-      return {
-        items: Array.from({ length: 500 }, (_, i) => ({ id: i, text: `Item ${i}` })),
-        itemHeight: 50,
-        visibleCount: 10,
-        startIndex: 0,
-        offset: 0,
-      };
-    },
-    computed: {
-      endIndex() {
-        return Math.min(this.startIndex + this.visibleCount, this.items.length);
-      },
-      visibleItems() {
-        return this.items.slice(this.startIndex, this.endIndex);
-      },
-      totalHeight() {
-        return this.items.length * this.itemHeight;
-      },
-    },
-    methods: {
-      handleOnTab() {
-        console.log("onTab");
-        this.$refs.container.scrollTop = this.$refs.container.scrollTop + 30;
-        this.handleScroll();
-      },
-      handleScroll() {
-        const scrollTop = this.$refs.container.scrollTop;
-        this.startIndex = Math.floor(scrollTop / this.itemHeight);
-        this.offset = this.startIndex * this.itemHeight;
-      },
-    },
+  const items = ref(
+    Array.from({ length: 500 }, (_, i) => ({ id: i, text: `Item ${i}` }))
+  );
+  const itemHeight = ref(50);
+  const visibleCount = ref(10);
+  const startIndex = ref(0);
+  const offset = ref(0);
+  const containerRef = ref();
+  const endIndex = computed(() => {
+    return Math.min(startIndex.value + visibleCount.value, items.value.length);
+  });
+  const visibleItems = computed(() => {
+    return items.value.slice(startIndex.value, endIndex.value);
+  });
+  const totalHeight = computed(() => {
+    return items.value.length * itemHeight.value;
+  });
+  const handleOnTab = () => {
+    console.log("onTab");
+    if (containerRef.value.scrollTop) {
+      containerRef.value.scrollTop = (containerRef.value?.scrollTop ?? 0) + 30;
+      handleScroll();
+    }
+  };
+  const handleScroll = () => {
+    const scrollTop = containerRef.value?.scrollTop ?? 0;
+    startIndex.value = Math.floor(scrollTop / itemHeight.value);
+    offset.value = startIndex.value * itemHeight.value;
   };
 </script>
 
@@ -72,3 +67,4 @@
     border-bottom: 1px solid #ccc;
   }
 </style>
+computed,
