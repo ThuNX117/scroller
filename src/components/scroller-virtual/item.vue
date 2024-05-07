@@ -8,8 +8,13 @@
     <input class="w-52 h-10 bg-red" @keydown.tab.prevent="$emit('onTriggerTab')" />
   </div>
 </template>
-<script setup>
-  // import definedProps from "vue";
+<script setup lang="ts">
+  type Emits = {
+    onTriggerTab: () => void;
+  };
+  type Props = {
+    id: number;
+  };
   const emits = defineEmits(["onTriggerTab"]);
   const props = defineProps(["id"]);
 </script>
