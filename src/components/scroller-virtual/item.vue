@@ -15,8 +15,8 @@
   type Props = {
     id: number;
   };
-  const emits = defineEmits(["onTriggerTab"]);
-  const props = defineProps(["id"]);
+  defineEmits<Emits>(["onTriggerTab"]);
+  defineProps<Props>(["id"]);
 </script>
 <style>
   .item-row {
