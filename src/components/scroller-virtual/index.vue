@@ -9,7 +9,7 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
   import Item from "./item.vue";
   export default {
     components: { Item },
