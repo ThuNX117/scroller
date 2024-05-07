@@ -5,7 +5,7 @@
     <input class="w-52 h-10" />
     <input class="w-52 h-10" />
     <input class="w-52 h-10" />
-    <input class="w-52 h-10 bg-red" @keydown.tab.prevent="handleTab" />
+    <input class="w-52 h-10 bg-red" @keydown.tab="handleTab" />
   </div>
 </template>
 <script setup lang="ts">
